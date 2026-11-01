@@ -5,7 +5,7 @@ Upstream-Contact: Jorge Suárez de Lis <yo@jorgesuarezdelis.name>
 Files: *
 Copyright: 2016 Jorge Suárez de Lis <yo@jorgesuarezdelis.name>
 License: GPL-3
-  /usr/share/common-licenses/GPL-4
+  /usr/share/common-licenses/GPL-3
 
 Files: assets/svg/*, assets/categories/*, assets/emoji.json
 Copyright: 2016 Emoji One <http://www.emojione.com>

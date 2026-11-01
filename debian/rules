@@ -1,4 +1,14 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@ --with python2
+	dh $@ --with python3
+
+ICONS := debian/emojione-picker/usr/share/icons
+
+override_dh_auto_install:
+	for size in 16 22 24 32 48 64 ; do \
+		install -Dm644 assets/icon-default-$$size.png $(ICONS)/hicolor/$${size}x$${size}/apps/emojione-picker.png ; \
+		install -Dm644 assets/icon-mono-dark-$$size.png $(ICONS)/ubuntu-mono-dark/apps/$$size/emojione-picker.png ; \
+		install -Dm644 assets/icon-mono-light-$$size.png $(ICONS)/ubuntu-mono-light/apps/$$size/emojione-picker.png ; \
+	done
+	install -Dm644 assets/icon-default.svg $(ICONS)/hicolor/scalable/apps/emojione-picker.svg

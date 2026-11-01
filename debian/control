@@ -1,18 +1,22 @@
 Source: emojione-picker
-Section: python
+Section: utils
 Priority: optional
 Homepage: https://github.com/gentakojima/emojione-picker-ubuntu
-Standards-Version: 3.9.5
-X-Python-Version: << 2.8
-Build-Depends: debhelper (>= 7), python (<<2.8)
+Standards-Version: 4.6.0
+Rules-Requires-Root: no
+Build-Depends: debhelper-compat (= 13), dh-python, python3
 Maintainer: Jorge Suárez de Lis <yo@jorgesuarezdelis.name>
 
-
 Package: emojione-picker
-Section: python
-Depends: python-gi (>=3.2), python2.7, python-notify (>=0.1), gir1.2-notify-0.7, gir1.2-appindicator3-0.1, gir1.2-rsvg-2.0, xdotool
 Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+ python3-gi (>= 3.30),
+ gir1.2-gtk-3.0,
+ gir1.2-notify-0.7,
+ gir1.2-ayatanaappindicator3-0.1 | gir1.2-appindicator3-0.1,
+ librsvg2-common
+Recommends: xdotool
 Description: Emoji Picker for the indicator area using Emoji One
  Emoji Picker featuring several menus and a search panel.
  .
- You must paste the emojis wherever you want to use them.
+ Emojis are copied to the clipboard, or typed directly with xdotool.
