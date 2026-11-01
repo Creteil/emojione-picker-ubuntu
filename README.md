@@ -6,13 +6,15 @@ Emojione-picker-Ubuntu is a simple emoji picker for Ubuntu 14.04+ running Unity 
 
 This project is proudly using emoji data from the [Emoji One](http://emojione.com/) project.
 
+> **About this fork:** the [original project](https://github.com/gentakojima/emojione-picker-ubuntu) targets Python 2.7, which is no longer available on current distributions. This fork ports it to **Python 3** (PyGObject, Ayatana or legacy AppIndicator) and modernizes the Debian packaging (debhelper 13, dh-python, icons shipped in the package). It has been tested on Ubuntu 22.04 with Unity 7.
+
 ## Installation
 
 Installation is optional, but recommended to run the program at session startup easily. 
 
 ### Method 1: Install Debian Package from PPA
 
-This method requires root access and is only available for Ubuntu 14.04, 15.10 and 16.04 at this moment.
+> ⚠️ The PPA ships the original **Python 2** version and only covers Ubuntu 14.04, 15.10 and 16.04. On a current system, use method 2 or 3 instead.
 
   1. Add [Official PPA](https://launchpad.net/~ys/+archive/ubuntu/emojione-picker): `sudo add-apt-repository ppa:ys/emojione-picker`
   2. Reload package indexes: `sudo apt-get update`
@@ -20,22 +22,23 @@ This method requires root access and is only available for Ubuntu 14.04, 15.10 a
 
 ### Method 2: Build a Debian Package from source
 
-This method requires root access and was only tested on Ubuntu 14.04, 15.10 and 16.04, but should work on any Debian-based distribution.
+Building does not require root access (only installing the package does). Tested on Ubuntu 22.04, it should work on any Debian-based distribution shipping Python 3 and debhelper 13.
 
-  1. Install dependencies: `sudo apt-get install python-2.7 python-all-dev build-essential python-notify gir1.2-notify-0.7 gir1.2-appindicator3-0.1 gir1.2-rsvg-2.0`
-  2. Clone the repository and cd into it: `git clone https://github.com/gentakojima/emojione-picker-ubuntu; cd emojione-picker-ubuntu`
-  3. Checkout the latest stable release. List the available releases: `git tag -l` and checkout, for example: `git checkout v0.1` (you can ignore this step to build the current development version instead, that may or may not work properly).
-  4. Build the package: `debuild` (*Signing the package might fail at this point, but it's not a big deal*)
-  5. Install it! `sudo dpkg -i ../emojione-picker*.deb`
+  1. Install build dependencies: `sudo apt-get install build-essential debhelper dh-python python3 fakeroot git`
+  2. Clone the repository and cd into it: `git clone https://github.com/Creteil/emojione-picker-ubuntu; cd emojione-picker-ubuntu`
+  3. Build the package: `dpkg-buildpackage -b -us -uc`
+  4. Install it! `sudo apt install ../emojione-picker_*_all.deb` (`apt` pulls the runtime dependencies automatically)
 
 ### Method 3: Standalone installer (should work on any distro!)
 
 This method does not require root access. If you run it as root, the picker will be installed for all users.
 
-  1. Clone the repository and cd into it: `git clone https://github.com/gentakojima/emojione-picker-ubuntu; cd emojione-picker-ubuntu`
-  2. Checkout the latest stable release. List the available releases: `git tag -l` and checkout, for example: `git checkout v0.1` (you can ignore this step to build the current development version instead, that may or may not work properly).
+  1. Install runtime dependencies: `sudo apt-get install python3-gi gir1.2-gtk-3.0 gir1.2-notify-0.7 gir1.2-ayatanaappindicator3-0.1 librsvg2-common xdotool` (use `gir1.2-appindicator3-0.1` instead of the Ayatana package on older releases)
+  2. Clone the repository and cd into it: `git clone https://github.com/Creteil/emojione-picker-ubuntu; cd emojione-picker-ubuntu`
   3. Run `./install.sh`
   4. If you want to uninstall it later, just run `./install.sh` again.
+
+You can also try it without installing anything: once the runtime dependencies are installed, just run `./emojione-picker` from the cloned directory.
 
 ## How to run it
 
@@ -92,7 +95,8 @@ You can get full color emojis working on Firefox with black and white fallback f
 
 ### I get "ValueError: Namespace AppIndicator3 not available" at startup
 
-You're missing the required python library. Please install the required package:
-  - Ubuntu: `gir1.2-appindicator3-0.1`
+You're missing the required indicator library. The picker uses Ayatana AppIndicator when available and falls back to the legacy AppIndicator. Please install one of these packages:
+  - Debian / Ubuntu 20.04+: `gir1.2-ayatanaappindicator3-0.1`
+  - Older Ubuntu: `gir1.2-appindicator3-0.1`
   - OpenSuse Leap: `typelib-1_0-AppIndicator3-0_1`
 
